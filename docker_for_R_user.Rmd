@@ -1,0 +1,185 @@
+---
+title: "Docker for R users"
+author: "Lynda Metref"
+date: "May 22nd 2019"
+output: 
+  ioslides_presentation:
+    incremental: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Agenda
+
+- What is Docker
+- How can Docker be useful to R users
+- How Docker is working, how to use it
+- Docker Best Practices
+- Examples
+
+
+# What is Docker
+
+
+## What is a container
+<center>"A standardized unit of software" [Docker Website](https://www.docker.com/resources/what-container)</center>
+
+- Containers package a piece of software 
+- Containers wrap all dependencies for this software to run
+- Containers are invisible to each other
+- Containers can be combined to create more complex modular systems
+
+- <center>"Containers are nice little boxes with my reproducibe software inside"</center>
+
+
+## Containerisation vs. Virtualisation
+<div class="columns-2">
+![Containers](oer-figures/OS/containers.png){width=100%}
+
+
+
+![Virtual Machine](oer-figures/OS/virtual-machines.png){width=100%}
+
+</div>
+
+Source: (Jens Lechtenbörger)[https://gitlab.com/lechten] under CC BY-SA 4.0; from GitLab
+
+# For Data Scientist and R users?
+
+## Why use Docker
+
+- Repeatability
+  - Analysis
+  - Environment
+- Application and data packaging
+- Development / Production environment management
+- Deployment on well known PaaS
+- Easy services deployment
+
+# How Docker works and how to use it
+
+## It's like a Compact Disc!
+
+
+
+## Dockerfile, images, containers...
+
+- Dockerfile: describes an image (software, dependencies, ...)
+- image: the software with all its dependencies
+- container: (running) instance of an image 
+
+## In practice
+
+<div align="center">*Standing on the shoulders of giants*</div>
+
+- Choose a base image (for ex. r-base)
+
+    ````
+    FROM r-base:latest
+    ````
+    
+- Describe your customisations (add R packages, your code, ...)
+    
+    ````
+    RUN R -e "install.packages('shiny')"
+    COPY build/mypackage.tar.gz .
+    ````
+    
+- Build the image
+
+    ````
+    $ docker build -t my-image-name .
+    ````
+    
+- Start a container
+
+    ````
+    $ docker run my-image-name
+    ````
+
+## Persistence: bind mounts
+
+- Each new new container starts from the image, data are lost when the container is deleted
+
+- Bind mounts are disk locations outside the container where data can be read or saved
+
+    ````
+    $ docker run --mount type=bind,source=/path/to/my/data,\
+       target=/data my-image-name
+    ````
+
+# Example
+
+## Running an existing image
+
+- Install docker: https://docs.docker.com/install/
+
+- Run an image
+
+    ````
+    $ docker run --rm -p 8787:8787 -e PASSWORD=BadPassword
+      --mount type=bind,source=~/Documents/Dev/Docker4R,target=/home/rstudio/data
+      rocker/tidyverse
+    ````
+
+## Shiny app
+
+````
+    FROM r-base:latest
+    MAINTAINER Lynda Metref "lynda.metref@gmail.com"
+
+    RUN R -e "install.packages('shiny')"
+
+    COPY build/RBoilerplateShinyWithCredentials*.tar.gz .
+    RUN R -e "install.packages(dir(pattern='RBoilerplateShinyWithCredentials.*'))"
+
+    EXPOSE 8888
+    ENTRYPOINT ["R", "-e", "library(RBoilerplateShinyWithCredentials);\ 
+    launch(8888,'0.0.0.0')"]
+````
+
+# Docker Best Practices
+
+## Docker security: it's like your home
+
+- Don't let strangers in
+- Only give your keys to someone you know well
+
+## Use base images from known sources
+
+- Docker Hub Certified Images and Verified Publisher
+- Reputable communities
+- Check Dockerfiles
+
+## When running ...
+
+- Do not run your application in the container as root (the default)
+
+    ````
+    $ docker run --user my_user ...
+    ````
+
+- Check network paramters
+  https://docs.docker.com/network/
+  
+## When creating your own ...
+
+- Don't put credentials in Dockerfile, load them from environment
+  https://github.com/lyndametref/RBoilerplateShinyWithCredentials
+
+# Thanks for your attention!
+
+## Aknowledgements
+
+Sources:
+
+> - https://ropenscilabs.github.io/r-docker-tutorial
+> - https://docs.docker.com
+
+Thank you to:
+
+> - Helbling Technik Wil AG for supporting the organisation
+> - Etienne Dysli Metref for review and feedback
+

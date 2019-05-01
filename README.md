@@ -1,3 +1,8 @@
+# Abstract
+
+Docker is a container system allowing to run unit of software. In this presentation I will explain more in details what is docker, how to use it, and most importantly how it can be useful to data scientists and R users. 
+
+
 structure
 
 - What is Docker
@@ -12,3 +17,5 @@ structure
     - Dockerfile, image , container
     - Security
 - Example
+
+
