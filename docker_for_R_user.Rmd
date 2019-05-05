@@ -4,6 +4,7 @@ author: "Lynda Metref"
 date: "May 22nd 2019"
 output: 
   ioslides_presentation:
+    css: style.css
     incremental: true
 ---
 
@@ -11,40 +12,33 @@ output:
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Agenda
+## Content
 
-- What is Docker
-- How can Docker be useful to R users
-- How Docker is working, how to use it
-- Docker Best Practices
-- Examples
-
+>- What is Docker
+>- How can Docker be useful to R users
+>- How Docker is working, how to use it
+>- Examples
+>- Docker Best Practices
 
 # What is Docker
 
-
 ## What is a container
-<center>"A standardized unit of software" [Docker Website](https://www.docker.com/resources/what-container)</center>
+<center>*A standardized unit of software*
+<p class=cite>
+[Docker Website](https://www.docker.com/resources/what-container)
+</p>
+</center>
+<p/>
 
 - Containers package a piece of software 
 - Containers wrap all dependencies for this software to run
 - Containers are invisible to each other
 - Containers can be combined to create more complex modular systems
 
-- <center>"Containers are nice little boxes with my reproducibe software inside"</center>
-
+- <center>*Containers are nice little boxes with reproducibe software inside*</center>
 
 ## Containerisation vs. Virtualisation
-<div class="columns-2">
-![Containers](oer-figures/OS/containers.png){width=100%}
-
-
-
-![Virtual Machine](oer-figures/OS/virtual-machines.png){width=100%}
-
-</div>
-
-Source: (Jens Lechtenbörger)[https://gitlab.com/lechten] under CC BY-SA 4.0; from GitLab
+![](figure/containerVSvm.svg){width=100%}
 
 # For Data Scientist and R users?
 
@@ -60,20 +54,20 @@ Source: (Jens Lechtenbörger)[https://gitlab.com/lechten] under CC BY-SA 4.0; fr
 
 # How Docker works and how to use it
 
-## It's like a Compact Disc!
-
-
-
 ## Dockerfile, images, containers...
+![](figure/docker_flow.svg){width=90%}
 
+<p/>
 - Dockerfile: describes an image (software, dependencies, ...)
 - image: the software with all its dependencies
 - container: (running) instance of an image 
 
 ## In practice
 
-<div align="center">*Standing on the shoulders of giants*</div>
-
+<div align="center">
+*Standing on the shoulders of giants*
+</div>
+<p></p>
 - Choose a base image (for ex. r-base)
 
     ````
@@ -101,25 +95,26 @@ Source: (Jens Lechtenbörger)[https://gitlab.com/lechten] under CC BY-SA 4.0; fr
 
 ## Persistence: bind mounts
 
-- Each new new container starts from the image, data are lost when the container is deleted
+>- Each new new container starts from the image, data are lost when the container is deleted
 
 - Bind mounts are disk locations outside the container where data can be read or saved
 
     ````
-    $ docker run --mount type=bind,source=/path/to/my/data,\
-       target=/data my-image-name
+    $ docker run --mount type=bind,source=/path/to/my/data,target=/data image-name
     ````
+<p class=cite>[Docker Bind Mounts Documentation](https://docs.docker.com/storage/bind-mounts/)</p>
 
-# Example
+# Examples
 
 ## Running an existing image
 
-- Install docker: https://docs.docker.com/install/
+- Install docker
+<p class=cite>[Docker Install Documentation](https://docs.docker.com/install/)</p>
 
 - Run an image
 
     ````
-    $ docker run --rm -p 8787:8787 -e PASSWORD=BadPassword
+    $ docker run --rm -p 8787:8787 -e PASSWORD=GoodPassword!
       --mount type=bind,source=~/Documents/Dev/Docker4R,target=/home/rstudio/data
       rocker/tidyverse
     ````
@@ -162,7 +157,7 @@ Source: (Jens Lechtenbörger)[https://gitlab.com/lechten] under CC BY-SA 4.0; fr
     ````
 
 - Check network paramters
-  https://docs.docker.com/network/
+<p class=cite>[Docker Network Documentation](https://docs.docker.com/network/)</p>
   
 ## When creating your own ...
 
@@ -180,6 +175,6 @@ Sources:
 
 Thank you to:
 
-> - Helbling Technik Wil AG for supporting the organisation
+> - Helbling Technik Wil AG for supporting the event organisation
 > - Etienne Dysli Metref for review and feedback
 
