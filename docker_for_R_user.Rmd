@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 >- What is Docker
 >- How can Docker be useful to R users
->- How Docker is working, how to use it
+>- How Docker works, how to use it
 >- Examples
 >- Docker Best Practices
 
@@ -25,7 +25,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ## What is a container
 <center>*A standardized unit of software*
 <p class=cite>
-[Docker Website](https://www.docker.com/resources/what-container)
+[Docker website](https://www.docker.com/resources/what-container)
 </p>
 </center>
 <p/>
@@ -52,7 +52,7 @@ knitr::opts_chunk$set(echo = FALSE)
 - Deployment on well known PaaS
 - Easy services deployment
 
-# How Docker works and how to use it
+# How Docker works <br/> and how to use it
 
 ## Dockerfile, images, containers...
 ![](figure/docker_flow.svg){width=90%}
@@ -95,31 +95,31 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Persistence: bind mounts
 
->- Each new new container starts from the image, data are lost when the container is deleted
+>- Each new container starts from the image, data are lost when the container is deleted
 
-- Bind mounts are disk locations outside the container where data can be read or saved
+- Bind mounts are filesystem locations outside the container where data can be read or saved
 
     ````
     $ docker run --mount type=bind,source=/path/to/my/data,target=/data image-name
     ````
-<p class=cite>[Docker Bind Mounts Documentation](https://docs.docker.com/storage/bind-mounts/)</p>
+<p class=cite>[Docker Documentation: Use bind mounts](https://docs.docker.com/storage/bind-mounts/)</p>
 
 # Examples
 
-## Running an existing image
+## Existing image
 
-- Install docker
+- Install Docker
 <p class=cite>[Docker Install Documentation](https://docs.docker.com/install/)</p>
 
 - Run an image
 
     ````
-    $ docker run --rm -p 8787:8787 -e PASSWORD=GoodPassword!
+    $ docker run --rm -p 8787:8787 -e PASSWORD=GoodPassword
       --mount type=bind,source=~/Documents/Dev/Docker4R,target=/home/rstudio/data
       rocker/tidyverse
     ````
 
-## Shiny app
+## Your Shiny app
 
 ````
     FROM r-base:latest
@@ -156,7 +156,7 @@ knitr::opts_chunk$set(echo = FALSE)
     $ docker run --user my_user ...
     ````
 
-- Check network paramters
+- Check network parameters
 <p class=cite>[Docker Network Documentation](https://docs.docker.com/network/)</p>
   
 ## When creating your own ...
