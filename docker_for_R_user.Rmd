@@ -45,8 +45,8 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Why use Docker
 
 - Repeatability
-  - Analysis
-  - Environment
+    - Analysis
+    - Environment
 - Application and data packaging
 - Development / Production environment management
 - Deployment on well known PaaS
@@ -127,13 +127,14 @@ knitr::opts_chunk$set(echo = FALSE)
 
     RUN R -e "install.packages('shiny')"
 
-    COPY build/RBoilerplateShinyWithCredentials*.tar.gz .
-    RUN R -e "install.packages(dir(pattern='RBoilerplateShinyWithCredentials.*'))"
+    # Expect a single file in the build directory
+    COPY build/RBoilerplateShinyDocker*.tar.gz .
+    RUN R -e "install.packages(dir(pattern='RBoilerplateShinyDocker.*'))"
 
     EXPOSE 8888
-    ENTRYPOINT ["R", "-e", "library(RBoilerplateShinyWithCredentials);\ 
-    launch(8888,'0.0.0.0')"]
+    ENTRYPOINT ["R", "-e", "library(RBoilerplateShinyDocker); launch(8888,'0.0.0.0')"]
 ````
+<p class=cite>[Source](https://github.com/lyndametref/RBoilerplate/tree/ShinyDocker)</p>
 
 # Docker Best Practices
 
@@ -161,8 +162,7 @@ knitr::opts_chunk$set(echo = FALSE)
   
 ## When creating your own ...
 
-- Don't put credentials in Dockerfile, load them from environment
-  https://github.com/lyndametref/RBoilerplateShinyWithCredentials
+- Don't put credentials in Dockerfile or image, load them from environment.
 
 # Thanks for your attention!
 
@@ -175,6 +175,7 @@ Sources:
 
 Thank you to:
 
-> - Helbling Technik Wil AG for supporting the event organisation
+> - Helbling Technik AG for supporting the event organisation
 > - Etienne Dysli Metref for review and feedback
+> - R User Group for their invitation
 
